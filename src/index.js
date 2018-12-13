@@ -1,8 +1,9 @@
 const debug = require('debug');
 const _ = require('lodash');
 const faker = require('faker');
+const algo = require('./algo/index');
 
-const log = debug('quicksort');
+const log = debug('Index');
 
 function getRandomInteger(min, max) {
   return Math.floor(Math.random() * (max - min + 1) ) + min;
@@ -26,79 +27,11 @@ function getInputArray(type) {
   }
 }
 
-const array = getInputArray('unique');
+const array = getInputArray('duplicates');
 
 log(array);
 log('-----------------------------------------------');
-
-function swap(i, j) {
-  log({
-    swap: {
-      i,j,
-      array_i: array[i],
-      array_j: array[j],
-    }
-  });
-  const temp = array[i];
-  array[i] = array[j];
-  array[j] = temp;
-}
-
-function quicksort_wrapper(a) {
-  array = a;
-  quicksort(0, array.length - 1);
-  return array;
-}
-
-function quicksort(start, end) {
-  const pivotIndex = _.random(start, end);
-  const pivotElement = array[pivotIndex];
-
-  const arrayChunkForLogging = array.slice(start, end + 1);
-  log("-----------");
-  log({
-    functionCall: `quicksort(${start},${end})`,
-    workingOn: arrayChunkForLogging,
-    pivotElement,
-  });
-
-  let i = start;
-  let j = end;
-
-  while (i < j) {
-    while (array[i] < pivotElement) {
-      i++;
-      log("++i: ", i);
-    }
-
-    while (array[j] > pivotElement) {
-      j--;
-      log("--j: ", j);
-    }
-
-    // TODO: if there are duplicates in the array, handle it.
-    // if (array[i] === pivotElement && i != j) {
-    //   i++;
-    //   log("++i: ", i);
-    //   swap(i, j);
-    // }
-    // if(array[j] === pivotElement && i != j) {
-    //   j--;
-    //   log("--j: ", j);
-    //   swap(i, j);
-    // }
-
-    swap(i, j);
-    log(array);
-  }
-
-  log(array);
-  if(i > start) quicksort(start, i - 1);
-  if(j < end) quicksort(i+1, end);
-}
-
-
-quicksort(0, array.length-1);
+const result = algo.quicksort(array);
 log('-----------------------------------------------');
 log('RESULT: ');
-log(array);
+log(result);
